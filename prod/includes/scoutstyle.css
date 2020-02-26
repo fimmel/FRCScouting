@@ -1,0 +1,428 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
+    font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin:0;
+    padding:0;
+}
+
+body {
+    background-color:#252525;
+    color:#BCBCBC!important;
+}
+
+.noshow {
+    border:hsla(0,0%,100%,0.00)!important;
+    background-color:hsla(0,0%,100%,0.00)!important;
+}
+
+#topbar {
+    width:100%;
+    font-size:20px;
+    background-color:#333333;
+    color:#F4F4F4;
+    border-bottom:6px solid;
+    height:54px;
+    margin:0;
+    padding:10px 4px 4px;
+}
+
+.teamnumber {
+    font-size:28px;
+    font-weight:700;
+}
+
+#ga_pic img {
+    width:48px;
+    height:48px;
+    display:block;
+    position:absolute;
+    right:0;
+    top:0;
+}
+
+#ga_name {
+    width:174px;
+    height:48px;
+    display:block;
+    position:absolute;
+    right:48px;
+    top:6px;
+}
+
+#ga_logout {
+    width:174px;
+    height:48px;
+    display:block;
+    position:absolute;
+    right:48px;
+    top:25px;
+    font-size:12px;
+}
+
+.g-signin2 {
+    width:300px;
+    height:48px;
+    display:block;
+    position:absolute;
+    right:48px;
+    top:6px;
+}
+
+#ga_logout a:hover {
+    color:#ffffff;
+}
+
+#ajaxstatus {
+    text-align:center;
+    width:100%;
+    height:24px;
+    background-color:#333333;
+    color:#F4F4F4;
+    padding-top:2px;
+    font-weight:700;
+}
+
+h1 {
+    color:#D2D2D2;
+    font-size:24px;
+    margin:10px 0 0;
+    padding:0;
+}
+
+.container {
+    max-width:99%;
+}
+
+.schedule {
+    border:1px solid;
+    width:99%;
+    border-color:#555;
+}
+
+.schedule th {
+    color:#efefef;
+}
+
+.gen {
+    background-color:#363636;
+    color:#efefef;
+    text-align:center;
+    border-bottom:1px solid;
+    border-bottom-color:#666666;
+    padding:3px;
+}
+
+.played {
+    background-color:#363636;
+    color:#efefef;
+    text-align:center;
+    padding:3px;
+}
+
+.notplayed {
+    background-color:#5C5C5C;
+    color:#efefef;
+    text-align:center;
+    padding:3px;
+}
+
+.red {
+    background-color:#B32222;
+    text-align:center;
+    border-bottom:1px solid;
+    border-bottom-color:#BF4446;
+    padding:3px;
+}
+
+.blue {
+    background-color:#2222B3;
+    text-align:center;
+    border-bottom:1px solid;
+    border-bottom-color:#4644BF;
+    padding:3px;
+}
+
+.mer {
+    background-color:#4C0001;
+    display:block;
+    border-radius:4px;
+}
+
+.meb {
+    background-color:#01004C;
+    display:block;
+    border-radius:4px;
+}
+
+.time {
+    font-size:13px;
+    color:#aaa;
+}
+
+.teamlist {
+    width:99%;
+}
+
+.teamlist td {
+    background-color:#222222;
+    text-align:center;
+    border-bottom:1px solid;
+    border-bottom-color:#464446;
+    margin-bottom:2px;
+    padding:3px;
+}
+
+pre {
+    color:#B38586;
+}
+
+::-webkit-scrollbar {
+    width:10px;
+}
+
+::-webkit-scrollbar-track {
+    background:#444;
+}
+
+::-webkit-scrollbar-thumb {
+    background:#999;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background:#666;
+}
+
+.table {
+    display:table;
+    color:#B7B7B7;
+    margin-bottom:.1rem;
+}
+
+.td {
+    display:table-cell;
+}
+
+#actionbar {
+    border-spacing:6px;
+}
+
+#gamepadstatus {
+    display:table-cell;
+    width:150px;
+    height:60px;
+    border-radius:5px;
+    vertical-align:middle;
+    text-align:center;
+    border-spacing:2px;
+    font-size:22px;
+}
+
+#matchperiod {
+    display:table-cell;
+    width:150px;
+    height:60px;
+    border-radius:5px;
+    vertical-align:middle;
+    text-align:center;
+    font-size:22px;
+    margin:2px;
+}
+
+.action {
+    display:table-cell;
+    width:150px;
+    height:60px;
+    border-radius:5px;
+    vertical-align:middle;
+    text-align:center;
+    border:1px solid;
+    font-size:22px;
+    margin:2px;
+}
+
+.auton {
+    border:1px solid;
+    background:#463c8c;
+    color:#e2dff7;
+    border-color:#6655e0;
+}
+
+#gameplay {
+    width:240px;
+    display:table-cell;
+    margin-right:2px;
+}
+
+.list-group-item {
+    font-size:14px;
+    margin:1px;
+    padding:.05rem 1.25rem;
+}
+
+.start {
+    background:#3C5C1D;
+    color:#B7EC7B;
+}
+
+.reload,#act_reload {
+    background:#6112a1;
+    color:#ecdff7;
+    border-color:#a455e0;
+}
+
+.miss,#act_miss {
+    background:#a12012;
+    color:#f7e1df;
+    border-color:#e05e55;
+}
+
+.lowgoal,#act_low {
+    background:#61a112;
+    color:#ecf7df;
+    border-color:#a1e055;
+}
+
+.outergoal,#act_outer {
+    background:#2c6cc7;
+    color:#dfe9f7;
+    border-color:#5588e0;
+}
+
+.innergoal,#act_inner {
+    background:#c29415;
+    color:#f7f1df;
+    border-color:#e0bd55;
+}
+
+#box {
+    display:block;
+    position:absolute;
+    top:200px;
+    left:2px;
+    bottom:2px;
+    width:240px;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    padding-right:3px;
+}
+
+#postgame .table {
+    border-spacing:10px;
+}
+
+#postgame .td {
+    width:18%;
+    border:1px solid;
+    border-radius:10px;
+    background-color:#2a2a2a;
+    border-color:#505050;
+    padding:5px;
+}
+
+h2 {
+    color:#E5E5E5;
+}
+
+h3 {
+    color:#E0E0E0;
+}
+
+.fullwidth {
+    display:block;
+    width:98%;
+    margin-right:5px;
+    margin-left:10px;
+}
+
+.sel_grey {
+    background-color:#c7c7c7;
+}
+
+.sel_red {
+    background-color:#ffc9c9;
+}
+
+.sel_orange {
+    background-color:#ffe0c9;
+}
+
+.sel_yellow {
+    background-color:#fff9c9;
+}
+
+.sel_gror {
+    background-color:#f4ffc9;
+}
+
+.sel_green {
+    background-color:#dbffc9;
+}
+
+.whoscouted {
+    font-size:12px;
+    color:#909090;
+}
+
+.matchdata {
+    border-bottom:2px double;
+    border-bottom-color:#8B8B8B;
+}
+
+.notes {
+    display:block;
+    width:200px;
+    height:90px;
+    overflow-y:scroll;
+    font-size:12px;
+    padding:5px;
+}
+
+.matchmeta {
+    text-align:center;
+    font-weight:700;
+}
+
+.table td {
+    border-top:1px solid #000000;
+    border-left:1px dotted #000000;
+    color:#FFFFFF;
+    font-weight:700;
+    text-align:center;
+}
+
+#ga_logout a:link,#ga_logout a:visited {
+    color:#C1C1C1;
+}
+
+.red a:link,.red a:visited,.red a:active {
+    color:#ffD7D7;
+}
+
+.red a:hover,.blue a:hover,.teamlist a:hover {
+    color:#D7D7D7;
+}
+
+.blue a:link,.blue a:visited,.blue a:active {
+    color:#D7D7ff;
+}
+
+.teamlist a:link,.teamlist a:visited,.teamlist a:active {
+    color:#bbb;
+}
+
+.tr,#status {
+    display:table-row;
+}
+
+.disconnected,.prematch {
+    background-color:#660000;
+    border:1px solid;
+    color:#FFC8C8;
+    border-color:#AA0000;
+}
+
+.connected,.telop {
+    background-color:#006600;
+    border:1px solid;
+    color:#C8FFC8;
+    border-color:#00AA00;
+}
