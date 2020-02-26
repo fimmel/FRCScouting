@@ -10,9 +10,9 @@ $scoutnumber = -1;
 	
 $client = new Google_Client();
 $client->setApplicationName("FRC Scouting");
-$client->setDeveloperKey("839195140874-8o19v9ttp9f0deulgocmtuqligqc5u4n.apps.googleusercontent.com");
+$client->setDeveloperKey($googleDevKey);
 
-//$client = new Google_Client(['839195140874-8o19v9ttp9f0deulgocmtuqligqc5u4n.apps.googleusercontent.com' => $CLIENT_ID]);  // Specify the CLIENT_ID of the app that accesses the backend
+
 $payload = $client->verifyIdToken($id_token);
 if ($payload) {
 	$sql = "SELECT * FROM `scout` WHERE `id` = :id"; 
