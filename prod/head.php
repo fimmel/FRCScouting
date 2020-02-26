@@ -12,7 +12,16 @@
     <title><?php echo $pagetitle; ?> - FRC Scouting</title>
     <style>
         #topbar {
-            border-bottom-color: <?php echo ($color == "blue" ? '#4444ff' : '#ff4444'); ?>;
+            border-bottom-color: <?php echo ($color == "blue" ? '#4444ff' : ($color == "red" ? '#ff4444' : 'rgb(128,188,0)')); ?>;
+        }
+        a{
+            color:<?php echo ($color == "blue" ? '#4444ff' : ($color == "red" ? '#ff4444' : 'rgb(128,188,0)')); ?>;
+        }
+        a:hover{
+            color:<?php echo ($color == "blue" ? '#4444ff' : ($color == "red" ? '#ff4444' : 'rgb(128,188,0)')); ?>;
+        }
+        .table .table{
+            background-color: #222;
         }
     </style>
 </head>

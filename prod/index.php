@@ -11,7 +11,8 @@ include('backend/graphics.php'); //Graphic Icon functions
 $schedule = new matchschedule($db, $ev_current);
 $teamlist = $schedule->getTeamList();
 $teamsched = $schedule->getMatchRobotIDsTeam($team);
-
+$pagetitle = "Match Schedule";
+include("head.php");
 function schedulerow($teams, $myteam, $played){
     $r1 = ($myteam != $teams['r1'] ? $teams['r1'] : "<span class='mer'>".$teams['r1']."</span>");
     $r2 = ($myteam != $teams['r2'] ? $teams['r2'] : "<span class='mer'>".$teams['r2']."</span>");
@@ -29,8 +30,7 @@ function schedulerow($teams, $myteam, $played){
     print ("<td class='blue'><a href='https://frcscouting.net/prod/teamstat.php?team=".$teams['b2']."'>".$b2."</a></td>");
     print ("<td class='blue'><a href='https://frcscouting.net/prod/teamstat.php?team=".$teams['b3']."'>".$b3."</a></td></tr>");
 }
-$pagetitle = "Match Schedule";
-include("head.php");
+
 ?>
 
 <div class="container">

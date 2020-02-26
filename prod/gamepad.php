@@ -2,6 +2,15 @@
 <?php
 //Database handling stuff
 include('backend/db.php');
+include('backend/2020botclass.php');
+include('backend/functions.php'); //Global functions
+include('backend/graphics.php'); //Graphic Icon functions
+
+$schedule = new matchschedule($db, $ev_current);
+$teamlist = $schedule->getTeamList();
+$teamsched = $schedule->getMatchRobotIDsTeam($team);
+$pagetitle = "Match Schedule";
+
 
 //Get Botmatch ID from URL
 $bmid = $_GET['bmid'];
@@ -21,8 +30,6 @@ $teamnumber = $bmidsql['team_id'];
 $matchid = $bmidsql['match_id'];
 $position = $bmidsql['position'];
 
-//Reset the full match name variable
-$matchname;
 
 //Lookup what type of and number of match we are scouting
 $sql2 = "SELECT * FROM `matches` WHERE id = :id;";
@@ -105,55 +112,11 @@ echo "Position Name: ".$botpos."\n";
 echo "Alliance Color: ".$color."\n";
 echo "-->";
 
-//reset preload data array
-$pre = null;
-
-//Populate the previous scouted data to the array
-$sql = "SELECT * FROM `2019_gamepieces` WHERE `2019_gamepieces`.`match_robot_id` = :bmid;";
-$statement = $db->prepare($sql);
-		$statement->bindValue(":bmid", $botmatchid);
-		$statement->execute();
-        $result = $statement->fetchAll();
-        foreach ($result as $row){
-			$pre = $row;
-		}
-
-function hatch($sql, $location){
-	if ($sql[$location] == 1){
-		print '<svg width="36px" height="36px" style="display: inline-block; vertical-align: middle;" rel="tooltip" title="Hatch Panel" class="hatch_svg" id="'.$location.'">
-	  <circle cx="18" cy="18" r="15" fill="none" stroke="#f4d941" stroke-width="6"></circle>
-	</svg>
-	';
-	}
-	else{
-		print '<svg width="36px" height="36px" style="display: inline-block; vertical-align: middle;" rel="tooltip" title="Hatch Panel" class="hatch_svg" id="'.$location.'">
-	  <circle cx="18" cy="18" r="15" fill="none" stroke="#dddddd" stroke-width="6"></circle>
-	</svg>
-	';
-	}
-
-}
-
-function cargo($sql, $location){
-	if ($sql[$location] == 1){
-		print '<svg width="36px" height="36px" style="display: inline-block; vertical-align: middle;" rel="tooltip" title="Cargo" class="cargo_svg" id="'.$location.'">
-	   <circle cx="18" cy="18" r="18" fill="#ffa500"></circle>
-	</svg>
-	';
-	}
-	else{
-	print '<svg width="36px" height="36px" style="display: inline-block; vertical-align: middle;" rel="tooltip" title="Cargo" class="cargo_svg" id="'.$location.'">
-	   <circle cx="18" cy="18" r="18" fill="#dddddd"></circle>
-	</svg>
-	';
-	}
-}
-
 ?>
 
 <?php 
-$pagetitle = "Scouting Team ".$teamnumber." playing ".$matchname."";
-include("header.php"); ?>
+$pagetitle = "Scouting Team ".$teamnumber." playing ".$matchname." (".$botpos.")";
+include("head.php"); ?>
 
 <style>
 	/* width */
@@ -360,7 +323,7 @@ include("header.php"); ?>
 <div class="table" id="actionbar">
 	<div id="status">
 		<div id="gamepadstatus" class="disconnected">Gamepad Disconnected</div>
-		<div id="matchperiod" class="prematch" onClick="matchbegin()">Pre Match<br><img src="images/controller/360_Start.png" width="40px" height="40px" /> <img src="images/keyboard/G1.png" width="40px" height="40px" /></div>
+		<div id="matchperiod" class="prematch" onClick="matchbegin()">Pre Match<br><img src="images/controller/360_Start.png" width="40px" height="40px" /></div>
 		<div id="act_reload" class="action" onClick="scout_reload()">Reload<br><img src="images/controller/360_LB.png" width="40px" height="40px" /><img src="images/controller/360_RB.png" width="40px" height="40px" /> <img src="images/keyboard/Space1.png" width="40px" height="12px" /></div>
 		<div id="act_miss" class="action" onClick="scout_miss()">Miss!<br><img src="images/controller/360_B.png" width="40px" height="40px" /> <img src="images/keyboard/A1.png" width="40px" height="40px" /></div>	
 		<div id="act_low" class="action" onClick="scout_low()">Low Goal<br><img src="images/controller/360_A.png" width="40px" height="40px" /> <img src="images/keyboard/S1.png" width="40px" height="40px" /></div>	

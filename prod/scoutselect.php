@@ -2,7 +2,15 @@
 $bmid = $_GET['bmid'];
 
 include('backend/db.php');
-include('backend/2019botclass.php');
+include('backend/2020botclass.php');
+include('backend/functions.php'); //Global functions
+include('backend/graphics.php'); //Graphic Icon functions
+
+$schedule = new matchschedule($db, $ev_current);
+$teamlist = $schedule->getTeamList();
+$teamsched = $schedule->getMatchRobotIDsTeam($team);
+
+
 
 $cursched = new matchschedule($db, $ev_current);
 
@@ -10,7 +18,7 @@ $cursched = new matchschedule($db, $ev_current);
 //print_r($cursched->getMatchList());
 
 $pagetitle = "Select Match to Scout";
-include ("header.php");
+include("head.php");
 ?>
 <style>
 	.red.scouted {
@@ -30,19 +38,25 @@ include ("header.php");
 		<table class="schedule">
 			<tr><th class='gen'>Match</th><th class='red'>Red 1</th><th class='red'>Red 2</th><th class='red'>Red 3</th><th class='blue'>Blue 1</th><th class='blue'>Blue 2</th><th class='blue'>Blue 3</th></tr>
 	<?php
-		function beenscouted($db, $bmid){
-			$scouted = "";
-			$sql = "SELECT * FROM `2020_Submission` WHERE `BM_ID` = :mid;";
-			$statement = $db->prepare($sql);
-			$statement->bindValue(":mid", $bmid);
-			$statement->execute();
-			$result = $statement->fetchAll();
-			foreach ($result as $row){
-				$scouted = " scouted";
-			}
-			return $scouted;
-		}	
-foreach($cursched->getMatchList() as $match){
+    function beenscouted($bmid, $color){
+        global $db;
+        $scouted = "";
+        $sql = "SELECT * FROM `2020_Submission` WHERE `BM_ID` = :mid;";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(":mid", $bmid);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        foreach ($result as $row){
+            if($color == "r"){
+                $scouted = " mer";
+            }
+            if($color == "b"){
+                $scouted = " meb";
+            }
+        }
+        return $scouted;
+    }
+    foreach($cursched->getMatchList() as $match){
 	//print_r($match);
 $teams = $cursched->getTeamsInMatch($match['MatchID']);
 
@@ -65,12 +79,12 @@ $statement = $db->prepare($sql);
 	//print ("<tr><td>".$teams['Meta']['name']."</td>");
 	
 	
-	print ("<td class='red".beenscouted($db,$teams['r1mbid'])."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['r1mbid']."'>".$teams['r1']."</a></td>");
-	print ("<td class='red".beenscouted($db,$teams['r2mbid'])."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['r2mbid']."'>".$teams['r2']."</a></td>");
-	print ("<td class='red".beenscouted($db,$teams['r3mbid'])."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['r3mbid']."'>".$teams['r3']."</a></td>");
-	print ("<td class='blue".beenscouted($db,$teams['b1mbid'])."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['b1mbid']."'>".$teams['b1']."</a></td>");
-	print ("<td class='blue".beenscouted($db,$teams['b2mbid'])."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['b2mbid']."'>".$teams['b2']."</a></td>");
-	print ("<td class='blue".beenscouted($db,$teams['b3mbid'])."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['b3mbid']."'>".$teams['b3']."</a></td></tr>");
+	print ("<td class='red'><span class='".beenscouted($teams['r1mbid'],"r")."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['r1mbid']."'>".$teams['r1']."</a></span></td>");
+	print ("<td class='red'><span class='".beenscouted($teams['r2mbid'],"r")."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['r2mbid']."'>".$teams['r2']."</a></span></td>");
+	print ("<td class='red'><span class='".beenscouted($teams['r3mbid'],"r")."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['r3mbid']."'>".$teams['r3']."</a></span></td>");
+	print ("<td class='blue'><span class='".beenscouted($teams['b1mbid'],"b")."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['b1mbid']."'>".$teams['b1']."</a></span></td>");
+	print ("<td class='blue'><span class='".beenscouted($teams['b2mbid'],"b")."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['b2mbid']."'>".$teams['b2']."</a></span></td>");
+	print ("<td class='blue'><span class='".beenscouted($teams['b3mbid'],"b")."'><a href='http://frcscouting.net/prod/gamepad.php?bmid=".$teams['b3mbid']."'>".$teams['b3']."</a></span></td></tr>");
 }
 	
 	?>
