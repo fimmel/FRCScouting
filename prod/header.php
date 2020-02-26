@@ -1,7 +1,7 @@
 <html>
 	
 <head>
-	<meta name="google-signin-client_id" content="839195140874-8o19v9ttp9f0deulgocmtuqligqc5u4n.apps.googleusercontent.com">
+	<meta name="google-signin-client_id" content="<?php echo $googleDevKey; ?>">
 	<script src="includes/libraries.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 	<link href="includes/style.css" rel="stylesheet">
