@@ -780,7 +780,7 @@ $pagetitle = "Event Statistics";
 
 <head>
     <meta name="google-signin-client_id"
-          content="839195140874-8o19v9ttp9f0deulgocmtuqligqc5u4n.apps.googleusercontent.com">
+          content="<?php echo $googleDevKey; ?>">
     <script src="includes/libraries-eventstats.js"></script>
 
 
