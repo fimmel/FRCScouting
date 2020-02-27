@@ -276,7 +276,7 @@ $Tballout = 0;
 $Tballin = 0;
 $hang = 0;
 $park = 0;
-
+$fouls = 0;
 foreach ($t as $m) {
     $played++;
     switch ($m['match']['PosNu']) {
@@ -309,6 +309,8 @@ foreach ($t as $m) {
 
     if (isset($m['sub'])) {//match was scouted
         foreach ($m['sub'] as $e) {//each scouted entry
+
+            $fouls += $e['match']['sd_fouls'];
             $scouted++;
             //print_r($e['shotset']['a']);
             foreach ($e['shotset']['a'] as $ss) {
@@ -375,6 +377,7 @@ if ($scouted > 0) {
 $ret['dHang'] = round(($hang / $played) * 100);
 $ret['dPark'] = round(($park / $played) * 100);
 
+    $ret['fouls'] = $fouls;
 
 //Hue Multipliers
 $ret['Color_Sat'] = 60;
@@ -416,7 +419,7 @@ function matchdetails($team1, $team2, $team3){
     echo '<div class="panel">';
     echo '<div class="teamdetail">';
     echo '<div class="teamname">' .$team1. ' - ' . $bot1_name. '</div>';
-    echo '<div class="score">Score: ' .$deets1['dAverageScore']. '</div>';
+    echo '<div class="score">Score: ' .$deets1['dAverageScore']. ' - Fouls '.$deets1['fouls'].'</div>';
     echo '<div class="auto">Auton - M:' .$deets1['dAutMiss']. ' L:' .$deets1['dAutLow']. ' O:' .$deets1['dAutOut']. ' I:' .$deets1['dAutIn']. '</div>';
     echo '<div class="auto">Telop - M:' .$deets1['dTelMiss']. ' L:' .$deets1['dTelLow']. ' O:' .$deets1['dTelOut']. ' I:' .$deets1['dTelIn']. '</div>';
     echo '<div class="auto">EG - Hang:' .$deets1['dHang']. '% Park:' .$deets1['dPark'].'%</div>';
@@ -424,7 +427,7 @@ function matchdetails($team1, $team2, $team3){
 
     echo '<div class="teamdetail">';
     echo '<div class="teamname">' .$team2. ' - ' . $bot2_name. '</div>';
-    echo '<div class="score">Score: ' .$deets2['dAverageScore']. '</div>';
+    echo '<div class="score">Score: ' .$deets2['dAverageScore']. ' - Fouls '.$deets2['fouls'].'</div>';
     echo '<div class="auto">Auton - M:' .$deets2['dAutMiss']. ' L:' .$deets2['dAutLow']. ' O:' .$deets2['dAutOut']. ' I:' .$deets2['dAutIn']. '</div>';
     echo '<div class="auto">Telop - M:' .$deets2['dTelMiss']. ' L:' .$deets2['dTelLow']. ' O:' .$deets2['dTelOut']. ' I:' .$deets2['dTelIn']. '</div>';
     echo '<div class="auto">EG - Hang:' .$deets2['dHang']. '% Park:' .$deets2['dPark'].'%</div>';
@@ -432,7 +435,7 @@ function matchdetails($team1, $team2, $team3){
 
     echo '<div class="teamdetail">';
     echo '<div class="teamname">' .$team3. ' - ' . $bot3_name. '</div>';
-    echo '<div class="score">Score: ' .$deets3['dAverageScore']. '</div>';
+    echo '<div class="score">Score: ' .$deets3['dAverageScore']. ' - Fouls '.$deets3['fouls'].'</div>';
     echo '<div class="auto">Auton - M:' .$deets3['dAutMiss']. ' L:' .$deets3['dAutLow']. ' O:' .$deets3['dAutOut']. ' I:' .$deets3['dAutIn']. '</div>';
     echo '<div class="auto">Telop - M:' .$deets3['dTelMiss']. ' L:' .$deets3['dTelLow']. ' O:' .$deets3['dTelOut']. ' I:' .$deets3['dTelIn']. '</div>';
     echo '<div class="auto">EG - Hang:' .$deets3['dHang']. '% Park:' .$deets3['dPark'].'%</div>';

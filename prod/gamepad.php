@@ -8,7 +8,7 @@ include('backend/graphics.php'); //Graphic Icon functions
 $schedule = new matchschedule($db, $ev_current);
 $teamlist = $schedule->getTeamList();
 $teamsched = $schedule->getMatchRobotIDsTeam($team);
-$pagetitle = "Match Schedule";
+$pagetitle = 'Match Schedule';
 
 
 //Get Botmatch ID from URL
@@ -18,7 +18,7 @@ $botmatchid = $bmid;
 //Find the details about our team from the match_robot table
 $sql1 = 'SELECT * FROM `match_robot` WHERE `id` = :bmid;';
 	$statement1 = $db->prepare($sql1);
-	$statement1->bindValue(":bmid", $bmid);
+	$statement1->bindValue(':bmid', $bmid);
 	$statement1->execute();
 	$result1 = $statement1->fetchAll();
 	foreach ($result1 as $row1){
@@ -33,13 +33,13 @@ $position = $bmidsql['position'];
 //Lookup what type of and number of match we are scouting
 $sql2 = 'SELECT * FROM `matches` WHERE id = :id;';
 	$statement2 = $db->prepare($sql2);
-	$statement2->bindValue(":id", $matchid);
+	$statement2->bindValue(':id', $matchid);
 	$statement2->execute();
 	$sqlresult2 = $statement2->fetchAll();
 	foreach ($sqlresult2 as $match){
 		switch ($match['level']) {
 			case 2:
-				$fullname = "Qualification";
+				$fullname = 'Qualification';
 				$shortname = "Q";
 				$matchname = "Qual " . $match['match_num'];
 				break;
@@ -100,7 +100,7 @@ switch ($bmidsql['position']) {
 
 //send the client some debug data
 echo "<!-- \n";
-echo "Team Number: ".$teamnumber."\n";
+echo 'Team Number: ' .$teamnumber."\n";
 echo "Match ID: ".$matchid."\n";
 echo "Bot Match ID: ".$botmatchid."\n";
 echo "Match Name Short: ".$shortname."\n";
@@ -698,14 +698,14 @@ include("head.php"); ?>
 		});
 		 await new Promise(r => setTimeout(r, 200)); 
 		gamepad.vibrationActuator.playEffect("dual-rumble", {
-		  startDelay: 000,
+		  startDelay: 0,
 		  duration: 300,
 		  weakMagnitude: 1,
 		  strongMagnitude: 0
 		});
 			await new Promise(r => setTimeout(r, 300)); 
 		gamepad.vibrationActuator.playEffect("dual-rumble", {
-		  startDelay: 000,
+		  startDelay: 0,
 		  duration: 300,
 		  weakMagnitude: 0,
 		  strongMagnitude: 1
@@ -805,7 +805,7 @@ include("head.php"); ?>
 		
 		console.log(scout_actions);
 		updateDashboard()
-	}
+	};
 	
 	function updateDashboard(){
 		for (var key in scout_actions) {
@@ -910,12 +910,12 @@ include("head.php"); ?>
 			item['title'] = $(this).text();
 			actions[i]=item;
 			i++;
-			return; // item;
+			 // item;
 		});
 		//items.forEach(element => console.log(element));
-		var postmatch = $('form').serialize()
+		var postmatch = $('form').serialize();
 		//console.log(items);
-		var formdata = deparam(postmatch)
+		var formdata = deparam(postmatch);
 		console.log(actions);
 		console.log(typeof actions);
 		
@@ -932,13 +932,28 @@ include("head.php"); ?>
   },
   function(data, status){
     console.log("Data: " + data + "\nStatus: " + status);
-	if(status == "success"){
-		if (data == "Not Logged In!!!"){
-			
-			$("#submitresult").html("Permission Error");
-			
-			
-		}
+	if(status === "success"){
+        if (data === "Not Logged In!!!"){
+
+            $("#submitresult").html("Permission Error");
+
+
+            document.getElementById("senddata").disabled = false;
+        }
+        else if (data === "Permission Error - Talk to Forest"){
+
+            $("#submitresult").html("Permission Error - Talk to Forest");
+
+            document.getElementById("senddata").disabled = false;
+
+        }
+        else if (data === "Permission Error - Not Registered"){
+
+            $("#submitresult").html("Permission Error");
+
+            document.getElementById("senddata").disabled = false;
+
+        }
 		else{
 			//$("#ajaxstatus").text(data);
 			$("#submitresult").html("Submitted");
@@ -952,4 +967,4 @@ include("head.php"); ?>
 		//console.log(formdata.serializeArray());
 	}
 </script>	
-<?php include("footer.php"); ?>
+<?php include('footer.php'); ?>

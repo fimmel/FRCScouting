@@ -346,7 +346,7 @@ foreach ($teamlist as $teamnumber) {
                 if (isset($m['sub'])) {//match was scouted
                     foreach ($m['sub'] as $e) {//each scouted entry
                         $fouls += $e['match']['sd_fouls'];
-                        echo $e['match']['sd_fouls'];
+                        //echo $e['match']['sd_fouls'];
                         //print_r($e);
                         $scouted++;
                         $fouls += $e['sd_fouls'];

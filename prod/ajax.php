@@ -24,7 +24,9 @@ if ($payload) {
 	  	foreach($scouts as $scout){
 			//print_r($scout);
 			echo $scout['permission'];
-			if ($scout['permission']== 0){
+			// ######################################
+			//Uncomment to enforce permissions
+			if ($scout['permission']== 0 and $forcelogin == TRUE){
 				echo 'Permission Error - Talk to Forest';
 				exit;
 			}

@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta name="google-signin-client_id" content="<?php echo $googleDevKey; ?>">
-    <script src="includes/libraries-eventstats.js"></script>
+    <script src="https://frcscouting.net/prod/includes/libraries-eventstats.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/dt-1.10.20/fc-3.3.0/fh-3.1.6/datatables.min.js"></script>
-    <link href="includes/style.css" rel="stylesheet">
+    <link href="https://frcscouting.net/prod/includes/style.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.1.1/jq-3.3.1/dt-1.10.20/fc-3.3.0/fh-3.1.6/datatables.min.css"/>
-    <link href="includes/scoutstyle.css" rel="stylesheet">
+    <link href="https://frcscouting.net/prod/includes/scoutstyle.css" rel="stylesheet">
     <meta charset="utf-8">
     <title><?php echo $pagetitle; ?> - FRC Scouting</title>
     <style>
@@ -40,8 +40,10 @@
 
 </div>
 <div id="ajaxstatus">
-    <a href="index.php">Match Schedule</a> -
-    <a href="scoutselect.php">Scout Input</a> -
-    <a href="eventstats.php">Event Stats</a>
+    <a href="https://frcscouting.net/prod/dt.php">Mobile</a> -
+    <a href="https://frcscouting.net/prod/index.php">Match Schedule</a> -
+    <a href="https://frcscouting.net/prod/scoutselect.php">Scout Input</a> -
+    <a href="https://frcscouting.net/prod/eventstats.php">Event Stats</a> -
+    <a href="https://frcscouting.net/cron">Utilities</a>
 </div>
 

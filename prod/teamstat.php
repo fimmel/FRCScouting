@@ -564,6 +564,13 @@ foreach($SD as  $match){
                             <?php echo $sub['match']['sd_def_notes']; //Notes on defense?>
                         </div>
                     </div>
+
+                    <div class="matchnotes">
+                        Match Notes:<br>
+                        <div class="notes">
+                            <?php echo $sub['match']['sd_match_notes']; //Match Notes?>
+                        </div>
+                    </div>
                     <div class="djbooth">
                         DJ Booth
                         <br>
@@ -591,15 +598,6 @@ foreach($SD as  $match){
                                 break;
                         }
                         ?>
-                    </div>
-
-
-
-                    <div class="matchnotes">
-                        Match Notes:<br>
-                        <div class="notes">
-                            <?php echo $sub['match']['sd_match_notes']; //Match Notes?>
-                        </div>
                     </div>
 
                     <?php
