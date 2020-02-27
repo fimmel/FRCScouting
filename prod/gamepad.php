@@ -446,6 +446,25 @@ include("head.php"); ?>
 						</div>
 					</div>
 					<div class="td">
+                        <h3>Fouls</h3>
+                        <label for="formGroupExampleInput">Number of Tech Fouls</label>
+                        <select class="custom-select mr-sm-2" id="sd_fouls" name="sd_fouls">
+                            <option value="0">None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10 or More</option>
+                        </select>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Number of <strong>TECH Fouls</strong>
+                        </small>
+
 						<h3>Notes</h3>
 						
 						<div class="form-group">

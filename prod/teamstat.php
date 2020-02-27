@@ -70,6 +70,7 @@ foreach($teamsched as $matchid){
         $submission_ID = $subm['ID']; //Submission ID Number
         $submission_Time= $subm['Time']; // Time Of Submission
 
+
         $match = matchstats($subm['ID']); //Form data from scout input
         $shots = shotstats($subm['ID']); //Shot Data
         $extradata['sub'][$subm['ID']]['ID'] = $subm['ID'];
@@ -77,7 +78,9 @@ foreach($teamsched as $matchid){
         $extradata['sub'][$subm['ID']]['SID'] = $subm['Scout'];
         $extradata['sub'][$subm['ID']]['Time'] = $subm['Time'];
         $extradata['sub'][$subm['ID']]["name"] = $scoutname;
+        $extradata['sub'][$subm['ID']]["id"] = $submission_ID;
         $extradata['sub'][$subm['ID']]['match'] = $match[0];
+        $extradata['sub'][$subm['ID']]['fouls'] = $match['sd_fouls'];
         $a_miss = 0;
         $a_low = 0;
         $a_outer = 0;
@@ -206,6 +209,13 @@ foreach($teamsched as $matchid){
         border-bottom: 1px solid #606060;
         margin-bottom: 10px;
     }
+    .matchid{
+        display: inline-block;
+
+        color: #4d4d4d;
+        font-variant: all-petite-caps;
+        font-size: 1rem;
+    }
     .matchname{
         display: inline-block;
         padding-top: 0px;
@@ -247,8 +257,8 @@ foreach($teamsched as $matchid){
     .points{
         display: inline-block;
         position: relative;
-        top: 10px;
         left: 00px;
+        top: 4px;
         vertical-align: top;
         font-size: 25px;
         color: #efefef;
@@ -256,12 +266,14 @@ foreach($teamsched as $matchid){
     .pointssub{
         display: block;
         position: relative;
-        top: 0px;
+        top: -13px;
         left: 00px;
         vertical-align: top;
         font-size: 15px;
         color: #4d4d4d;
         font-variant: all-petite-caps;
+        padding: 0px;
+        height: 0px;
     }
     .balls{
         display: inline-block;
@@ -278,6 +290,7 @@ foreach($teamsched as $matchid){
         vertical-align: top;
         color: #4d4d4d;
         font-variant: all-petite-caps;
+        width: 180px;
     }
     .hang{
         display: inline-block;
@@ -287,6 +300,7 @@ foreach($teamsched as $matchid){
         vertical-align: top;
         color: #4d4d4d;
         font-variant: all-petite-caps;
+        width: 50px;
     }
     .hangstaus{
 
@@ -299,6 +313,7 @@ foreach($teamsched as $matchid){
         top: 0px;
         left: 00px;
         vertical-align: top;
+        width: 50px;
     }
     .defnotes{
         display: inline-block;
@@ -346,6 +361,7 @@ foreach($SD as  $match){
     <div class="match" style="height: <?php echo $matchheight;?>px">
         <div class="matchname">
             <?php echo $match['match']['name']; ?>
+            <div class="matchid">MID:<?php echo $match['match']['MatchID']; ?></div>
         </div>
         <div class="alliancescore">
             <?php gfx_ballscore(
@@ -383,6 +399,8 @@ foreach($SD as  $match){
                     <div class="whoscouted">
                         <?php echo $sub['name']; ?> <sup>&commat;</sup>
                         <?php echo date('H:i', strtotime($sub['Time'])); ?>
+
+                        (<?php echo $sub['id']; ?>)
                     </div>
                     <div class="points">
                         <?php
@@ -444,6 +462,8 @@ foreach($SD as  $match){
                         echo $points
                         ?>
                         <div class="pointssub">Points</div>
+                        <?php echo $sub['match']['sd_fouls']; ?>
+                        <div class="pointssub">Avg Fouls</div>
                     </div>
                     <div class="balls">
                         <?php

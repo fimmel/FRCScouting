@@ -161,7 +161,7 @@ foreach ($balls as $ball){
 //print_r($balls); 
 
 	
-	$sqli = "INSERT INTO `2020_Match` (`BM_ID`, `Sub`,`sd_cw_rotation`, `sd_cw_position`, `sd_eg_hang`, `sd_eg_hang_level`, `sd_eg_hang_bots`, `sd_def_giving_rating`, `sd_def_receiving_rating`, `sd_def_notes`, `sd_match_notes`) VALUES (:bmid, :sub, :sd_cw_rotation, :sd_cw_position, :sd_eg_hang, :sd_eg_hang_level, :sd_eg_hang_bots, :sd_def_giving_rating, :sd_def_receiving_rating, :sd_def_notes, :sd_match_notes);";
+	$sqli = "INSERT INTO `2020_Match` (`BM_ID`, `Sub`,`sd_cw_rotation`, `sd_cw_position`, `sd_eg_hang`, `sd_eg_hang_level`, `sd_eg_hang_bots`, `sd_def_giving_rating`, `sd_def_receiving_rating`, `sd_def_notes`, `sd_match_notes`, `sd_fouls`) VALUES (:bmid, :sub, :sd_cw_rotation, :sd_cw_position, :sd_eg_hang, :sd_eg_hang_level, :sd_eg_hang_bots, :sd_def_giving_rating, :sd_def_receiving_rating, :sd_def_notes, :sd_match_notes, :sd_fouls);";
 		$statementi = $db->prepare($sqli);
 		$statementi->bindValue(":bmid",  $bmid);
 		$statementi->bindValue(":sub",   $submissionid);
@@ -173,7 +173,8 @@ foreach ($balls as $ball){
 		$statementi->bindValue(":sd_def_giving_rating", $form['sd_def_giving_rating']);
 		$statementi->bindValue(":sd_def_receiving_rating", $form['sd_def_receiving_rating']);
 		$statementi->bindValue(":sd_def_notes", $form['sd_def_notes']);
-		$statementi->bindValue(":sd_match_notes", $form['sd_match_notes']);
+    $statementi->bindValue(":sd_match_notes", $form['sd_match_notes']);
+    $statementi->bindValue(":sd_fouls", $form['sd_fouls']);
 		$count = $statementi->execute();
 
 

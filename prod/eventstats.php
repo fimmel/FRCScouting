@@ -253,8 +253,7 @@ function teamdetails($teamnumber, $ev_current)
             }
 
 
-            print("</div>");//td
-            print("</div>");//tr
+
         }
         $SD[$extradata['match']['MRID']] = $extradata;
     }//end match loop
@@ -280,6 +279,7 @@ foreach ($teamlist as $teamnumber) {
             <th>Matches Played</th>
             <th>Secret Sauce</th>
             <th>Average Points</th>
+            <th>Average Tech Fouls</th>
             <th>A Avg Misses</th>
             <th>A Avg Low</th>
             <th>A Avg Outer</th>
@@ -302,6 +302,7 @@ foreach ($teamlist as $teamnumber) {
         foreach ($eventarray as $t) {
             $played = 0;
             $scouted = 0;
+            $fouls = 0;
             $Aballmiss = 0;
             $Aballlow = 0;
             $Aballout = 0;
@@ -342,10 +343,13 @@ foreach ($teamlist as $teamnumber) {
                     $park++;
                 }
 
-
                 if (isset($m['sub'])) {//match was scouted
                     foreach ($m['sub'] as $e) {//each scouted entry
+                        $fouls += $e['match']['sd_fouls'];
+                        echo $e['match']['sd_fouls'];
+                        //print_r($e);
                         $scouted++;
+                        $fouls += $e['sd_fouls'];
                         //print_r($e['shotset']['a']);
                         foreach ($e['shotset']['a'] as $ss) {
                             //print_r($ss);
@@ -396,6 +400,7 @@ foreach ($teamlist as $teamnumber) {
                 $dTelLow = round(($Tballlow / $scouted), 2);
                 $dTelOut = round(($Tballout / $scouted), 2);
                 $dTelIn = round(($Tballin / $scouted), 2);
+                $dFouls = round($fouls / $scouted,3);
             } else {
                 $dAutMiss = 0;
                 $dAutLow = 0;
@@ -405,6 +410,7 @@ foreach ($teamlist as $teamnumber) {
                 $dTelLow = 0;
                 $dTelOut = 0;
                 $dTelIn = 0;
+                $dFouls = 0;
             }
 
             //Endgame
@@ -429,6 +435,17 @@ foreach ($teamlist as $teamnumber) {
                 <td data-sort="0">???</td>
                 <td data-sort="<?php echo $dAverageScore ?>"
                     style="background-color: <?php echo convertHSL(round($dAverageScore * 4.5), $Color_Sat, $Color_Light); ?>"><?php echo $dAverageScore ?></td>
+
+                <td data-sort="<?php echo $dFouls ?>"
+                    style="background-color:
+                    <?php
+                    if ($dFouls == '0'){
+                        echo convertHSL(130, $Color_Sat, $Color_Light);
+                    }
+                    else{
+                        echo convertHSL(round(70 - ($dFouls * 13)), $Color_Sat, $Color_Light);
+                    }
+                    ?>"><?php echo $dFouls ?></td>
 
                 <td data-sort="<?php echo $dAutMiss; ?>"
                     style="background-color: <?php echo convertHSL(round(130 - ($dAutMiss * $Color_autoBalls)), $Color_Sat, $Color_Light); ?>"><?php echo $dAutMiss; ?>
