@@ -63,9 +63,9 @@ foreach($teamsched as $matchid){
     }
 
     $scoutsub = submission($matchid['MRID']);
-
+    $submissioncount = 0;
     foreach($scoutsub as $subm){
-
+        $submissioncount++;
         $scoutname = scoutname($subm['Scout']); //Name Of Scout
         $submission_ID = $subm['ID']; //Submission ID Number
         $submission_Time= $subm['Time']; // Time Of Submission
@@ -195,222 +195,431 @@ foreach($teamsched as $matchid){
 
 
     }
+    $extradata['submissioncount'] = $submissioncount;
     $SD[$extradata['match']['MRID']] = $extradata;
 }//end match loop
 ?>
-<div class="table">
-<table>
-    <tr>
-        <th>Match</th>
-        <th colspan="4">Alliance Summary</th>
-        <th>Scouted Data</th>
-    </tr>
+<style>
+    .match{
+        display: block;
+        height: 120px;
+        border-bottom: 1px solid #606060;
+        margin-bottom: 10px;
+    }
+    .matchname{
+        display: inline-block;
+        padding-top: 0px;
+        position: absolute;
+        font-size: 20px;
+        color: #efefef;/*rgb(128,188,0);*/
+        font-weight: bold;
+    }
+    .alliancescore{
+        display: inline-block;
+        padding-top: 2px;
+        position: absolute;
+        margin-top: 30px;
+    }
+    .submissions{
+        display: inline-block;
+        padding-top: 2px;
+        position: absolute;
+        left: 280px;
+        vertical-align: top;
+        height: 120px;
+    }
+    .scoutsubmission{
+        display: block;
+        padding-top: 2px;
+        height:120px;
+        vertical-align: top;
+        overflow-x:  hidden;
+        overflow-y: hidden;
+    }
+    .whoscouted{
+        display: block;
+        position: relative;
+        width: 300px;
+        top: 0;
+        vertical-align: top;
+        color: #3a8500;
+    }
+    .points{
+        display: inline-block;
+        position: relative;
+        top: 10px;
+        left: 00px;
+        vertical-align: top;
+        font-size: 25px;
+        color: #efefef;
+    }
+    .pointssub{
+        display: block;
+        position: relative;
+        top: 0px;
+        left: 00px;
+        vertical-align: top;
+        font-size: 15px;
+        color: #4d4d4d;
+        font-variant: all-petite-caps;
+    }
+    .balls{
+        display: inline-block;
+        position: relative;
+        top: 0px;
+        left: 00px;
+        vertical-align: top;
+    }
+    .djbooth{
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 00px;
+        vertical-align: top;
+        color: #4d4d4d;
+        font-variant: all-petite-caps;
+    }
+    .hang{
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 00px;
+        vertical-align: top;
+        color: #4d4d4d;
+        font-variant: all-petite-caps;
+    }
+    .hangstaus{
+
+        color: #efefef;
+        font-variant: none;
+    }
+    .defense{
+        display: inline-block;
+        position: relative;
+        top: 0px;
+        left: 00px;
+        vertical-align: top;
+    }
+    .defnotes{
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 00px;
+        height: 100px;
+        width: 200px;
+        color: #4d4d4d;
+        font-variant: all-petite-caps;
+
+        vertical-align: top;
+    }
+    .matchnotes{
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 00px;
+        height: 100px;
+        width: 200px;
+        vertical-align: top;
+        color: #4d4d4d;
+        font-variant: all-petite-caps;
+    }
+    .notes{
+        color: #efefef;
+        font-variant: none;
+    }
+
+
+</style>
+
 <?php
 foreach($SD as  $match){
+    if ($match['submissioncount'] == 0){
+        $rowspan = 1;
+        $matchheight = 125;
+    }
+    else{
+        $rowspan = $match['submissioncount'];
+
+        $matchheight = (120* $match['submissioncount'])+5;
+    }
     ?>
-    <tr class="matchdata">
-        <td class="detailTable_Match">
+    <div class="match" style="height: <?php echo $matchheight;?>px">
+        <div class="matchname">
             <?php echo $match['match']['name']; ?>
-        </td>
-        <td class="detailTable_Alliance">
+        </div>
+        <div class="alliancescore">
             <?php gfx_ballscore(
-                0,
+                '',
                 $match['alliance']['autoCellsBottom'],
                 $match['alliance']['autoCellsOuter'],
                 $match['alliance']['autoCellsInner'],
                 $match['alliance']['autoCellPoints'],
-                "A"); ?>
-        </td>
-        <td class="detailTable_Alliance">
-            <?php gfx_ballscore(
-                0,
+                "Aut");
+            gfx_ballscore(
+                '',
                 $match['alliance']['teleopCellsBottom'],
                 $match['alliance']['teleopCellsOuter'],
                 $match['alliance']['teleopCellsInner'],
                 $match['alliance']['teleopCellPoints'],
-                "T"); ?>
-        </td>
-        <td class="detailTable_Alliance">
-            <?php gfx_ballscore(
-                0,
+                "Tel");
+            gfx_ballscore(
+                '',
                 $match['alliance']['teleopCellsBottom']+$match['alliance']['autoCellsBottom'],
                 $match['alliance']['teleopCellsOuter']+$match['alliance']['autoCellsOuter'],
                 $match['alliance']['teleopCellsInner']+$match['alliance']['autoCellsInner'],
                 $match['alliance']['teleopCellPoints']+$match['alliance']['autoCellPoints'],
-                "G"); ?>
-        </td>
-        <td class="detailTable_Alliance">
-            <?php gfx_coathanger(
+                "Gam");
+            gfx_coathanger(
                 $match['alliance']['endgameRungIsLevel'],
                 $match['alliance']['endgameRobot1'],
                 $match['alliance']['endgameRobot2'],
                 $match['alliance']['endgameRobot3'],
                 $match['alliance']['mypos']); ?>
-        </td>
-        <td class="detailTable_Scouted">
-            <div class="sets">
-                <table>
-                    <?php foreach ($match['sub'] as $sub){ ?>
-                    <tr>
-                        <td>
-                            <div class="whoscouted">
-                                <?php echo $sub['name']; ?>
-                                <br />
-                                <?php echo $sub['Time']; ?>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="postmatch">
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <?php
-                                            //Total Autonomous Balls Scored
-                                            $ga_mi = 0;
-                                            $ga_lo = 0;
-                                            $ga_ou = 0;
-                                            $ga_in = 0;
-                                            foreach($sub['shotset']['a'] as $auto){
-                                                $ga_mi = $ga_mi + $auto['miss'];
-                                                $ga_lo = $ga_lo + $auto['low'];
-                                                $ga_ou = $ga_ou + $auto['outer'];
-                                                $ga_in = $ga_in + $auto['inner'];
-                                            }
-                                            $ga_points = ($ga_lo + ($ga_ou*2) + ($ga_in*3))* 2;
-                                            //Total Teleop Balls Scored
-                                            $gt_mi = 0;
-                                            $gt_lo = 0;
-                                            $gt_ou = 0;
-                                            $gt_in = 0;
-                                            foreach($sub['shotset']['t'] as $telop){
-                                                $gt_mi = $gt_mi + $telop['miss'];
-                                                $gt_lo = $gt_lo + $telop['low'];
-                                                $gt_ou = $gt_ou + $telop['outer'];
-                                                $gt_in = $gt_in + $telop['inner'];
-                                            }
-                                            $gt_points = ($gt_lo + ($gt_ou*2) + ($gt_in*3));
-                                            //Autonomous
-                                            gfx_ballscore(
-                                                $ga_mi,
-                                                $ga_lo,
-                                                $ga_ou,
-                                                $ga_in,
-                                                $ga_points,
-                                                'A');
-                                            //Teleop
-                                            gfx_ballscore(
-                                                $gt_mi,
-                                                $gt_lo,
-                                                $gt_ou,
-                                                $gt_in,
-                                                $gt_points,
-                                                'T');
-                                            //Total
-                                            gfx_ballscore(
-                                                $ga_mi + $gt_mi,
-                                                $ga_lo + $gt_lo,
-                                                $ga_ou + $gt_ou,
-                                                $ga_in + $gt_in,
-                                                $ga_points + $gt_points,
-                                                'G');
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            switch ($sub['match']['sd_cw_rotation']) {
-                                                case 1;// 1-No Attempt
-                                                    gfx_djbooth(0);
-                                                    break;
-                                                case 2;// 2-Attempt
-                                                    gfx_djbooth(1);
-                                                    break;
-                                                case 3;// 3-Complete
-                                                    gfx_djbooth(2);
-                                                    break;
-                                            }
-                                            switch ($sub['match']['sd_cw_position']) {
-                                                case 1;// 1-No Attempt
-                                                    gfx_djbooth(3);
-                                                    break;
-                                                case 2;// 2-Attempt
-                                                    gfx_djbooth(4);
-                                                    break;
-                                                case 3;// 3-Complete
-                                                    gfx_djbooth(5);
-                                                    break;
-                                            }
-                                            ?>
-                                        </td>
-                                        <td>
-                                            Climb:<br>
-                                            <?php echo $sub['match']['sd_eg_hang']; //1-No Attempt, 2-Parked, 3-Attempted, 4-Successful?>
-                                            <?php echo $sub['match']['sd_eg_hang_level']; //1-No Chance, 2-Attempt, 3-Successful?>
-                                            <?php echo $sub['match']['sd_eg_hang_bots']; //Number of Bots on the bar?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            gfx_defencegiven($sub['match']['sd_def_giving_rating']);
-                                            ?>
-                                            <?php
-                                            gfx_defencerecieved($sub['match']['sd_def_receiving_rating']);
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <div class="notes">
-                                                <?php echo $sub['match']['sd_def_notes']; //Notes on defense?>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="notes">
-                                                <?php echo $sub['match']['sd_match_notes']; //Match Notes?>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                        <td>
-                            <?php
-                            /*
-                            echo "<div class=\"auto\">";
-                            foreach($sub['shotset']['a'] as $auto){
-                            $g_mi = $auto['miss'];
-                            $g_lo = $auto['low'];
-                            $g_ou = $auto['outer'];
-                            $g_in = $auto['inner'];
-                            $g_points = ($g_lo + ($g_ou*2) + ($g_in*3))* 2;
-                            gfx_ballscore($g_mi,$g_lo,$g_ou,$g_in,$g_points,"A");
-                            }
-                            echo "</div>";//sets
-                            */
+        </div>
+        <div class = "submissions">
+            <?php foreach ($match['sub'] as $sub){ ?>
+                <div class="scoutsubmission">
+
+                    <div class="whoscouted">
+                        <?php echo $sub['name']; ?> <sup>&commat;</sup>
+                        <?php echo date('H:i', strtotime($sub['Time'])); ?>
+                    </div>
+                    <div class="points">
+                        <?php
+                        $points =0;
+                        foreach($sub['shotset']['a'] as $auto){
+                            $ga_mi = $ga_mi + $auto['miss'];
+                            $ga_lo = $ga_lo + $auto['low'];
+                            $ga_ou = $ga_ou + $auto['outer'];
+                            $ga_in = $ga_in + $auto['inner'];
+                        }
+                        $points += ($ga_lo + ($ga_ou*2) + ($ga_in*3))* 2;
+                        foreach($sub['shotset']['t'] as $telop){
+                            $gt_mi = $gt_mi + $telop['miss'];
+                            $gt_lo = $gt_lo + $telop['low'];
+                            $gt_ou = $gt_ou + $telop['outer'];
+                            $gt_in = $gt_in + $telop['inner'];
+                        }
+                        $points += ($gt_lo + ($gt_ou*2) + ($gt_in*3));
+
+                        switch ($sub['match']['sd_eg_hang']) {
+                            case 1:
+                                //no points
+                                break;
+                            case 2:
+                            case 3:
+                                $points += 5;
+                                break;
+                            case 4:
+                                $points += 25;
+                                break;
+                        }
+                        switch ($sub['match']['sd_eg_hang_level']) {
+                            case 1:
+                            case 2:
+                                //no points
+                                break;
+                            case 3:
+                                $points += 15;
+                                break;
+                        }
+                        switch ($sub['match']['sd_cw_rotation']) {
+                            case 1;// 1-No Attempt
+                                break;
+                            case 2;// 2-Attempt
+                                break;
+                            case 3;// 3-Complete
+                                $points += 10;
+                                break;
+                        }
+                        switch ($sub['match']['sd_cw_position']) {
+                            case 1;// 1-No Attempt
+                                break;
+                            case 2;// 2-Attempt
+                                break;
+                            case 3;// 3-Complete
+                                $points += 20;
+                                break;
+                        }
+                        echo $points
+                        ?>
+                        <div class="pointssub">Points</div>
+                    </div>
+                    <div class="balls">
+                        <?php
+                        //Total Autonomous Balls Scored
+                        $ga_mi = 0;
+                        $ga_lo = 0;
+                        $ga_ou = 0;
+                        $ga_in = 0;
+                        foreach($sub['shotset']['a'] as $auto){
+                            $ga_mi = $ga_mi + $auto['miss'];
+                            $ga_lo = $ga_lo + $auto['low'];
+                            $ga_ou = $ga_ou + $auto['outer'];
+                            $ga_in = $ga_in + $auto['inner'];
+                        }
+                        $ga_points = ($ga_lo + ($ga_ou*2) + ($ga_in*3))* 2;
+                        //Total Teleop Balls Scored
+                        $gt_mi = 0;
+                        $gt_lo = 0;
+                        $gt_ou = 0;
+                        $gt_in = 0;
+                        foreach($sub['shotset']['t'] as $telop){
+                            $gt_mi = $gt_mi + $telop['miss'];
+                            $gt_lo = $gt_lo + $telop['low'];
+                            $gt_ou = $gt_ou + $telop['outer'];
+                            $gt_in = $gt_in + $telop['inner'];
+                        }
+                        $gt_points = ($gt_lo + ($gt_ou*2) + ($gt_in*3));
+                        //Autonomous
+                        gfx_ballscore(
+                            $ga_mi,
+                            $ga_lo,
+                            $ga_ou,
+                            $ga_in,
+                            $ga_points,
+                            'Aut');
+                        //Teleop
+                        gfx_ballscore(
+                            $gt_mi,
+                            $gt_lo,
+                            $gt_ou,
+                            $gt_in,
+                            $gt_points,
+                            'Tel');
+                        //Total
+                        gfx_ballscore(
+                            $ga_mi + $gt_mi,
+                            $ga_lo + $gt_lo,
+                            $ga_ou + $gt_ou,
+                            $ga_in + $gt_in,
+                            $ga_points + $gt_points,
+                            'Gam');
+                        ?>
+                    </div>
+
+                    <div class="hang">
+                        <?php
+                        switch ($sub['match']['sd_eg_hang']) {
+                            case 1:
+                                print 'N/A';
+                                //leave gray
+                                break;
+                            case 2:
+                                print 'Park';
+                                $points = 5;
+                                break;
+                            case 3:
+                                print 'Atmp';
+                                $points = 5;
+
+                                break;
+                            case 4:
+                                print 'Hang';
+                                $points = 25;
+
+                                break;
+                        }
+                        ?>
+                        <div class="hangstaus">
+                            <?php gfx_climb($sub['match']['sd_eg_hang'],$sub['match']['sd_eg_hang_level']);
+                            //echo $sub['match']['sd_eg_hang']; //1-No Attempt, 2-Parked, 3-Attempted, 4-Successful
+
                             ?>
-                        </td>
-                        <td>
-                            <?php
-                            /*
-                            echo "<div class=\"telo\">";
-                            foreach($sub['shotset']['t'] as $telop){
-                            $g_mi = $telop['miss'];
-                            $g_lo = $telop['low'];
-                            $g_ou = $telop['outer'];
-                            $g_in = $telop['inner'];
-                            $g_points = ($g_lo + ($g_ou*2) + ($g_in*3));
-                            gfx_ballscore($g_mi,$g_lo,$g_ou,$g_in,$g_points,"T");
-                            }
-                            */
-                            ?>
-                        </td>
-                    </tr>
+                            <?php //echo $sub['match']['sd_eg_hang_level']; //1-No Chance, 2-Attempt, 3-Successful?>
+                            <?php //echo $sub['match']['sd_eg_hang_bots']; //Number of Bots on the bar?>
+                        </div>
+                    </div>
+                    <div class="defense">
+                        <?php
+                        gfx_defencegiven($sub['match']['sd_def_giving_rating']);
+                        ?>
+                        <?php
+                        gfx_defencerecieved($sub['match']['sd_def_receiving_rating']);
+                        ?>
+                    </div>
+                    <div class="defnotes">
+                        Defense Notes<br>
+                        <div class="notes">
+                            <?php echo $sub['match']['sd_def_notes']; //Notes on defense?>
+                        </div>
+                    </div>
+                    <div class="djbooth">
+                        DJ Booth
+                        <br>
+                        <?php
+                        switch ($sub['match']['sd_cw_rotation']) {
+                            case 1;// 1-No Attempt
+                                gfx_djbooth(0);
+                                break;
+                            case 2;// 2-Attempt
+                                gfx_djbooth(1);
+                                break;
+                            case 3;// 3-Complete
+                                gfx_djbooth(2);
+                                break;
+                        }
+                        switch ($sub['match']['sd_cw_position']) {
+                            case 1;// 1-No Attempt
+                                gfx_djbooth(3);
+                                break;
+                            case 2;// 2-Attempt
+                                gfx_djbooth(4);
+                                break;
+                            case 3;// 3-Complete
+                                gfx_djbooth(5);
+                                break;
+                        }
+                        ?>
+                    </div>
+
+
+
+                    <div class="matchnotes">
+                        Match Notes:<br>
+                        <div class="notes">
+                            <?php echo $sub['match']['sd_match_notes']; //Match Notes?>
+                        </div>
+                    </div>
+
                     <?php
+                    /*
+                    echo "<div class=\"auto\">";
+                    foreach($sub['shotset']['a'] as $auto){
+                    $g_mi = $auto['miss'];
+                    $g_lo = $auto['low'];
+                    $g_ou = $auto['outer'];
+                    $g_in = $auto['inner'];
+                    $g_points = ($g_lo + ($g_ou*2) + ($g_in*3))* 2;
+                    gfx_ballscore($g_mi,$g_lo,$g_ou,$g_in,$g_points,"A");
                     }
+                    echo "</div>";//sets
+                    */
                     ?>
-                </table>
-            </div>
-        </td>
-    </tr>
+
+                    <?php
+                    /*
+                    echo "<div class=\"telo\">";
+                    foreach($sub['shotset']['t'] as $telop){
+                    $g_mi = $telop['miss'];
+                    $g_lo = $telop['low'];
+                    $g_ou = $telop['outer'];
+                    $g_in = $telop['inner'];
+                    $g_points = ($g_lo + ($g_ou*2) + ($g_in*3));
+                    gfx_ballscore($g_mi,$g_lo,$g_ou,$g_in,$g_points,"T");
+                    }
+                    */
+                    ?>
+
+                </div>
+                <?php
+            }
+            ?>
+
+        </div>
+    </div>
     <?php
 }
 ?>
-</table>
-</div>
+
 <?php include("footer.php"); ?>

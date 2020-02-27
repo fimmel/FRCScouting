@@ -1,4 +1,3 @@
-<!doctype html>
 <?php
 //Database handling stuff
 include('backend/db.php');
@@ -17,7 +16,7 @@ $bmid = $_GET['bmid'];
 $botmatchid = $bmid;
 
 //Find the details about our team from the match_robot table
-$sql1 = "SELECT * FROM `match_robot` WHERE `id` = :bmid;";
+$sql1 = 'SELECT * FROM `match_robot` WHERE `id` = :bmid;';
 	$statement1 = $db->prepare($sql1);
 	$statement1->bindValue(":bmid", $bmid);
 	$statement1->execute();
@@ -32,7 +31,7 @@ $position = $bmidsql['position'];
 
 
 //Lookup what type of and number of match we are scouting
-$sql2 = "SELECT * FROM `matches` WHERE id = :id;";
+$sql2 = 'SELECT * FROM `matches` WHERE id = :id;';
 	$statement2 = $db->prepare($sql2);
 	$statement2->bindValue(":id", $matchid);
 	$statement2->execute();

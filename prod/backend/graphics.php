@@ -95,14 +95,17 @@ function gfx_ballscore($miss,$low,$out,$in,$points ,$period = ""){
     if($in >0){ $svgfill_in = gradient($in); }else{$svgfill_in = "#444444"; }
 
     $gradient = "Default";
-    if($period=="A"){
-        $gradient = "Auto";
+    if($period=="Aut"){
+        $gradient = 'Auto';
+        $barcolor = '#e6aa1e';
     }
-    if($period=="T"){
-        $gradient = "Teleop";
+    if($period=="Tel"){
+        $gradient = 'Teleop';
+        $barcolor = '#1ec5e6';
     }
-    if($period=="G"){
-        $gradient = "Game";
+    if($period=="Gam"){
+        $gradient = 'Game';
+        $barcolor = '#e61ee3';
     }
 
     //$svgfill_out = "#01ac00";
@@ -114,6 +117,7 @@ function gfx_ballscore($miss,$low,$out,$in,$points ,$period = ""){
 	.svg_out{stroke:#000000;stroke-miterlimit:10;}
 	.svg_in{stroke:#000000;stroke-miterlimit:10;}
 	.svg_low{stroke:#000000;stroke-miterlimit:10;}
+	.colbar{stroke-width:0}
 	text{
 	font-size:12px;
 	font-weight:bold;
@@ -138,10 +142,11 @@ function gfx_ballscore($miss,$low,$out,$in,$points ,$period = ""){
       <stop offset="100%" style="stop-color:rgb(120,120,120);stop-opacity:0.5" />
     </linearGradient>
   </defs>
-<rect fill="url(#'.$gradient.')" x="0.5" y="0.5" width="49" height="84"/>
+<rect fill="#222222" x="0.5" y="0.5" width="49" height="84"/>
 <polygon fill="'.$svgfill_out.'" class="svg_out" points="35.5,5 14.5,5 4,23 14.5,41 35.5,41 46,23 "/>
 <circle fill="'.$svgfill_in.'" class="svg_in" cx="25" cy="23" r="9"/>
 <rect fill="'.$svgfill_low.'" x="7" y="49" class="svg_low" width="36" height="14"/>
+<rect fill="' . $barcolor . '" x="0" y="83" class="colbar" width="50" height="2"/>\';
 <text text-anchor="start" x="2" y="12" fill="#cc9999">'.$miss.'</text>
 <text text-anchor="middle" x="18" y="40" fill="#efefef">'.$out.'</text>
 <text text-anchor="middle" x="24" y="28" fill="#efefef">'.$in.'</text>
@@ -271,6 +276,83 @@ function gfx_djbooth($stage){
             break;
     }
 }
+function gfx_climb($pos,$level)
+{//1-No Attempt, 2-Parked, 3-Attempted, 4-Successful
+
+    $offset = 0;
+    $poscolorleft = "#444444";
+    switch ($pos) {
+        case 0:
+            //leave gray
+            break;
+        case 1:
+            //$botcolor = "#1ff258";
+            break;
+        case 2:
+            $botcolor = "#1ff258";
+            break;
+        case 3:
+            $botcolor = "#f23f1f";
+            break;
+        case 4:
+            $botcolor = "#1ff258";
+            break;
+    }
+    print '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="85px"  xml:space="preserve">
+<style type="text/css">
+	.st0park{display:none;fill:none;stroke:#888888;stroke-miterlimit:10;}
+	.st1park{stroke:#000;stroke-miterlimit:10;}
+	.st0hang{fill:none;stroke:#CCCCCC;stroke-miterlimit:10;}
+	.st1hang{stroke:#000;stroke-miterlimit:10;}
+	.bar{stroke:#000000;stroke-miterlimit:10;}
+</style>';
+    switch ($pos) {
+        case 1:
+            //leave gray
+            break;
+        case 2:
+            print '<line class="st0park" x1="20" y1="34.8" x2="20" y2="55.03"/>';
+            print '<rect fill="' . $botcolor . '" x="6.68" y="55.03" class="st1park" width="26.64" height="12.16"/>';
+            $points = 5;
+            break;
+        case 3:
+            print '<line class="st0hang" x1="20" y1="' . (18 + $offset) . '.8" x2="20" y2="' . (39 + $offset) . '.03"/>';
+            print '<rect fill="' . $botcolor . '" x="6.68" y="' . (39 + $offset) . '.03" class="st1hang" width="26.64" height="12.16"/>';
+            $points = 5;
+
+            break;
+        case 4:
+            print '<line class="st0hang" x1="20" y1="' . (18 + $offset) . '.8" x2="20" y2="' . (39 + $offset) . '.03"/>';
+            print '<rect fill="' . $botcolor . '" x="6.68" y="' . (39 + $offset) . '.03" class="st1hang" width="26.64" height="12.16"/>';
+            $points = 25;
+
+            break;
+    }
+
+
+    switch ($level) {//1-No Chance, 2-Attempt, 3-Successful
+        case 1:
+            $barcolor = "#f23f1f";
+            //$bar = '<rect fill="' . $barcolor . '" x="5" y="15" class="bar" width="90" height="4"/>';
+
+            $bar = '<rect x="5" y="15" fill="' . $barcolor . '" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="30" height="4"/>';
+            break;
+        case 2:
+            $barcolor = "#f2d61f";
+           // $bar = '<rect fill="' . $barcolor . '" x="5" y="15" class="bar" width="90" height="4"/>';
+            $bar = '<rect x="5" y="15" fill="' . $barcolor . '" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="30" height="4"/>';
+            break;
+        case 3:
+            $barcolor = "#1ff258";
+            $bar = '<rect fill="' . $barcolor . '" x="5" y="15" class="bar" width="30" height="4"/>';
+            $points += 15;
+            break;
+    }
+    print $bar;
+    print '<text text-anchor="start" x="2" y="81" fill="#efefef">' . $points . '</text>';
+    print '</svg> ';
+
+}
 function gfx_coathanger($level, $bot1, $bot2, $bot3, $mypos){
 
     //coathanger($match['alliance']['endgameRungIsLevel'],$match['alliance']['endgameRobot1'],$match['alliance']['endgameRobot2'],$match['alliance']['endgameRobot3']);
@@ -372,7 +454,7 @@ function gfx_coathanger($level, $bot1, $bot2, $bot3, $mypos){
     if($level == "IsLevel"){
         if ($barbonus == 1){
             $bar = '<rect fill="#39B54A" x="5" y="15" class="bar" width="90" height="4"/>';
-            $points += ($barbonus * 10);
+            $points += ($barbonus * 15);
         }
         else{
             $bar = '<rect fill="#444444" x="5" y="15" class="bar" width="90" height="4"/>';
@@ -389,7 +471,7 @@ function gfx_coathanger($level, $bot1, $bot2, $bot3, $mypos){
     }
 
     print $bar;
-    print '<text text-anchor="start" x="2" y="81" fill="#efefef">A '.$points.'</text>';
+    print '<text text-anchor="start" x="2" y="81" fill="#efefef">Ali '.$points.'</text>';
     print '<text text-anchor="end" x="98" y="81" fill="#efefef">T '.$mypoints.'</text>';
     print '</svg> ';
 

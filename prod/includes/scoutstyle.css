@@ -5,7 +5,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 }
 
 body {
-    background-color:#252525;
+    background-color:#151515;
     color:#BCBCBC!important;
 }
 
@@ -177,6 +177,7 @@ pre {
 
 ::-webkit-scrollbar {
     width:10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
