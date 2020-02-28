@@ -277,6 +277,8 @@ $Tballin = 0;
 $hang = 0;
 $park = 0;
 $fouls = 0;
+$defgiv = 0;
+$defrec = 0;
 foreach ($t as $m) {
     $played++;
     switch ($m['match']['PosNu']) {
@@ -299,10 +301,10 @@ foreach ($t as $m) {
             $egpos = "endgameRobot3";
             break;
     }
-    if ($m['alliance'][$egpos] == "Hang") {
+    if ($m['alliance'][$egpos] === "Hang") {
         $hang++;
     }
-    if ($m['alliance'][$egpos] == "Park") {
+    if ($m['alliance'][$egpos] === "Park") {
         $park++;
     }
 
@@ -311,6 +313,9 @@ foreach ($t as $m) {
         foreach ($m['sub'] as $e) {//each scouted entry
 
             $fouls += $e['match']['sd_fouls'];
+            $defgiv += $e['match']['sd_def_giving_rating']-1;
+            $defrec += $e['match']['sd_def_receiving_rating']-1;
+
             $scouted++;
             //print_r($e['shotset']['a']);
             foreach ($e['shotset']['a'] as $ss) {
@@ -327,6 +332,19 @@ foreach ($t as $m) {
                 $Tballin = $Tballin + $ss['inner'];
             }
 
+        }
+        if($scouted > 1){
+            $fouls = round($fouls / $scouted,1);
+            $defgiv = round($defgiv / $scouted,1);
+            $defrec = round($defrec / $scouted,1);
+            $Aballmiss = round($Aballmiss / $scouted,1);
+            $Aballlow = round($Aballlow / $scouted,1);
+            $Aballout = round($Aballout / $scouted,1);
+            $Aballin = round($Aballin / $scouted,1);
+            $Tballmiss = round($Tballmiss / $scouted,1);
+            $Tballlow = round($Tballlow / $scouted,1);
+            $Tballout = round($Tballout / $scouted,1);
+            $Tballin = round($Tballin / $scouted,1);
         }
     }
 }
@@ -354,14 +372,14 @@ $ret['dAverageScore'] = round($score, 1);
 
 //Averages
 if ($scouted > 0) {
-    $ret['dAutMiss'] = round(($Aballmiss / $scouted), 2);
-    $ret['dAutLow'] = round(($Aballlow / $scouted), 2);
-    $ret['dAutOut'] = round(($Aballout / $scouted), 2);
-    $ret['dAutIn'] = round(($Aballin / $scouted), 2);
-    $ret['dTelMiss'] = round(($Tballmiss / $scouted), 2);
-    $ret['dTelLow'] = round(($Tballlow / $scouted), 2);
-    $ret['dTelOut'] = round(($Tballout / $scouted), 2);
-    $ret['dTelIn'] = round(($Tballin / $scouted), 2);
+    $ret['dAutMiss'] = round(($Aballmiss / $scouted), 1);
+    $ret['dAutLow'] = round(($Aballlow / $scouted), 1);
+    $ret['dAutOut'] = round(($Aballout / $scouted), 1);
+    $ret['dAutIn'] = round(($Aballin / $scouted), 1);
+    $ret['dTelMiss'] = round(($Tballmiss / $scouted), 1);
+    $ret['dTelLow'] = round(($Tballlow / $scouted), 1);
+    $ret['dTelOut'] = round(($Tballout / $scouted), 1);
+    $ret['dTelIn'] = round(($Tballin / $scouted), 1);
 } else {
     $ret['dAutMiss'] = 0;
     $ret['dAutLow'] = 0;
@@ -374,11 +392,12 @@ if ($scouted > 0) {
 }
 
 //Endgame
-$ret['dHang'] = round(($hang / $played) * 100);
-$ret['dPark'] = round(($park / $played) * 100);
-
+$ret['dHang'] = $hang; //round(($hang / $played) * 100);
+$ret['dPark'] = $park;//round(($park / $played) * 100);
+    $ret['played'] = $played;
     $ret['fouls'] = $fouls;
-
+    $ret['defgiv'] = $defgiv;
+    $ret['defrec'] = $defrec;
 //Hue Multipliers
 $ret['Color_Sat'] = 60;
 $ret['Color_Light'] = 27;
@@ -418,28 +437,102 @@ function matchdetails($team1, $team2, $team3){
 
     echo '<div class="panel">';
     echo '<div class="teamdetail">';
-    echo '<div class="teamname">' .$team1. ' - ' . $bot1_name. '</div>';
-    echo '<div class="score">Score: ' .$deets1['dAverageScore']. ' - Fouls '.$deets1['fouls'].'</div>';
-    echo '<div class="auto">Auton - M:' .$deets1['dAutMiss']. ' L:' .$deets1['dAutLow']. ' O:' .$deets1['dAutOut']. ' I:' .$deets1['dAutIn']. '</div>';
-    echo '<div class="auto">Telop - M:' .$deets1['dTelMiss']. ' L:' .$deets1['dTelLow']. ' O:' .$deets1['dTelOut']. ' I:' .$deets1['dTelIn']. '</div>';
-    echo '<div class="auto">EG - Hang:' .$deets1['dHang']. '% Park:' .$deets1['dPark'].'%</div>';
+    echo '<div class="teamnumber">' .$team1. ' <div class="teamname"> ' . $bot1_name. '</div></div>';
+    echo '<div class="points">' .$deets1['dAverageScore']. '<div class="pointssub">Points</div>'.$deets1['fouls'].'<div class="pointssub">Fouls</div></div>';
+    gfx_ballscore(
+        $deets1['dAutMiss'],
+        $deets1['dAutLow'],
+        $deets1['dAutOut'],
+        $deets1['dAutIn'],
+        ($deets1['dAutLow']+($deets1['dAutOut']*2)+($deets1['dAutIn']*3))*2,
+        'Aut');
+    //Teleop
+    gfx_ballscore(
+        $deets1['dTelMiss'],
+        $deets1['dTelLow'],
+        $deets1['dTelOut'],
+        $deets1['dTelIn'],
+        ($deets1['dTelLow']+($deets1['dTelOut']*2)+($deets1['dTelIn']*3)),
+        'Tel');
+    //Total
+    gfx_ballscore(
+        $deets1['dTelMiss']+$deets1['dAutMiss'],
+        $deets1['dTelLow']+$deets1['dAutLow'],
+        $deets1['dTelOut']+$deets1['dAutOut'],
+        $deets1['dTelIn']+$deets1['dAutIn'],
+        (($deets1['dTelLow']+($deets1['dTelOut']*2)+($deets1['dTelIn']*3))*2)+($deets1['dTelLow']+($deets1['dTelOut']*2)+($deets1['dTelIn']*3)),
+        'Gam');
+    gfx_defense($deets1['defgiv'],$deets1['defrec']);
+    echo '<div class="hang">' .$deets1['dHang']. '<span class="outof"> / '.$deets1['played'].'</span><div class="hangsub">Hang</div>'.$deets1['dPark'].'<span class="outof"> / '.$deets1['played'].'</span><div class="hangsub">Park</div></div>';
+
+
     echo"</div>";//end of bot
 
     echo '<div class="teamdetail">';
-    echo '<div class="teamname">' .$team2. ' - ' . $bot2_name. '</div>';
-    echo '<div class="score">Score: ' .$deets2['dAverageScore']. ' - Fouls '.$deets2['fouls'].'</div>';
-    echo '<div class="auto">Auton - M:' .$deets2['dAutMiss']. ' L:' .$deets2['dAutLow']. ' O:' .$deets2['dAutOut']. ' I:' .$deets2['dAutIn']. '</div>';
-    echo '<div class="auto">Telop - M:' .$deets2['dTelMiss']. ' L:' .$deets2['dTelLow']. ' O:' .$deets2['dTelOut']. ' I:' .$deets2['dTelIn']. '</div>';
-    echo '<div class="auto">EG - Hang:' .$deets2['dHang']. '% Park:' .$deets2['dPark'].'%</div>';
+    echo '<div class="teamnumber">' .$team2. ' <div class="teamname"> ' . $bot2_name. '</div></div>';
+    echo '<div class="points">' .$deets2['dAverageScore']. '<div class="pointssub">Points</div>'.$deets2['fouls'].'<div class="pointssub">Fouls</div></div>';
+    gfx_ballscore(
+        $deets2['dAutMiss'],
+        $deets2['dAutLow'],
+        $deets2['dAutOut'],
+        $deets2['dAutIn'],
+        ($deets2['dAutLow']+($deets2['dAutOut']*2)+($deets2['dAutIn']*3))*2,
+        'Aut');
+    //Teleop
+    gfx_ballscore(
+        $deets2['dTelMiss'],
+        $deets2['dTelLow'],
+        $deets2['dTelOut'],
+        $deets2['dTelIn'],
+        ($deets2['dTelLow']+($deets2['dTelOut']*2)+($deets2['dTelIn']*3)),
+        'Tel');
+    //Total
+    gfx_ballscore(
+        $deets2['dTelMiss']+$deets2['dAutMiss'],
+        $deets2['dTelLow']+$deets2['dAutLow'],
+        $deets2['dTelOut']+$deets2['dAutOut'],
+        $deets2['dTelIn']+$deets2['dAutIn'],
+        (($deets2['dTelLow']+($deets2['dTelOut']*2)+($deets2['dTelIn']*3))*2)+($deets2['dTelLow']+($deets2['dTelOut']*2)+($deets2['dTelIn']*3)),
+        'Gam');
+
+    gfx_defense($deets2['defgiv'],$deets2['defrec']);
+    echo '<div class="hang">' .$deets2['dHang']. '<span class="outof"> / '.$deets2['played'].'</span><div class="hangsub">Hang</div>'.$deets2['dPark'].'<span class="outof"> / '.$deets2['played'].'</span><div class="hangsub">Park</div></div>';
+
     echo"</div>";//end of bot
 
+
     echo '<div class="teamdetail">';
-    echo '<div class="teamname">' .$team3. ' - ' . $bot3_name. '</div>';
-    echo '<div class="score">Score: ' .$deets3['dAverageScore']. ' - Fouls '.$deets3['fouls'].'</div>';
-    echo '<div class="auto">Auton - M:' .$deets3['dAutMiss']. ' L:' .$deets3['dAutLow']. ' O:' .$deets3['dAutOut']. ' I:' .$deets3['dAutIn']. '</div>';
-    echo '<div class="auto">Telop - M:' .$deets3['dTelMiss']. ' L:' .$deets3['dTelLow']. ' O:' .$deets3['dTelOut']. ' I:' .$deets3['dTelIn']. '</div>';
-    echo '<div class="auto">EG - Hang:' .$deets3['dHang']. '% Park:' .$deets3['dPark'].'%</div>';
+    echo '<div class="teamnumber">' .$team3. ' <div class="teamname"> ' . $bot3_name. '</div></div>';
+    echo '<div class="points">' .$deets3['dAverageScore']. '<div class="pointssub">Points</div>'.$deets3['fouls'].'<div class="pointssub">Fouls</div></div>';
+    gfx_ballscore(
+        $deets3['dAutMiss'],
+        $deets3['dAutLow'],
+        $deets3['dAutOut'],
+        $deets3['dAutIn'],
+        ($deets3['dAutLow']+($deets3['dAutOut']*2)+($deets3['dAutIn']*3))*2,
+        'Aut');
+    //Teleop
+    gfx_ballscore(
+        $deets3['dTelMiss'],
+        $deets3['dTelLow'],
+        $deets3['dTelOut'],
+        $deets3['dTelIn'],
+        ($deets3['dTelLow']+($deets3['dTelOut']*2)+($deets3['dTelIn']*3)),
+        'Tel');
+    //Total
+    gfx_ballscore(
+        $deets3['dTelMiss']+$deets3['dAutMiss'],
+        $deets3['dTelLow']+$deets3['dAutLow'],
+        $deets3['dTelOut']+$deets3['dAutOut'],
+        $deets3['dTelIn']+$deets3['dAutIn'],
+        (($deets3['dTelLow']+($deets3['dTelOut']*2)+($deets3['dTelIn']*3))*2)+($deets3['dTelLow']+($deets3['dTelOut']*2)+($deets3['dTelIn']*3)),
+        'Gam');
+
+    gfx_defense($deets3['defgiv'],$deets3['defrec']);
+    echo '<div class="hang">' .$deets3['dHang']. '<span class="outof"> / '.$deets3['played'].'</span><div class="hangsub">Hang</div>'.$deets3['dPark'].'<span class="outof"> / '.$deets3['played'].'</span><div class="hangsub">Park</div></div>';
     echo"</div>";//end of bot
+
+
     echo "</div>";
 }
 function schedulerow($teams, $myteam, $played){
@@ -478,6 +571,10 @@ function schedulerow($teams, $myteam, $played){
             padding: 0px;
             font-family:Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: #232323;
+        }
+        .outof{
+            color: #878787;
+            font-size: 16px;
         }
         #topbar {
             display: block;
@@ -597,10 +694,117 @@ function schedulerow($teams, $myteam, $played){
 
         /* Style the accordion panel. Note: hidden by default */
         .panel {
-            padding: 0 18px;
+            /*padding: 0 18px;*/
             background-color: #232323;
             display: none;
             overflow: hidden;
+        }
+
+        .points{
+            display: inline-block;
+            position: relative;
+            left: 00px;
+            top: 4px;
+            vertical-align: top;
+            font-size: 25px;
+            color: #efefef;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: left;
+            width: 70px;
+        }
+        .pointssub{
+            display: block;
+            position: relative;
+            top: -13px;
+            left: 00px;
+            vertical-align: top;
+            font-size: 15px;
+            color: #4d4d4d;
+            font-variant: all-petite-caps;
+            padding: 0px;
+            height: 0px;
+        }
+        .hang{
+            display: inline-block;
+            position: relative;
+            left: 00px;
+            top: 4px;
+            vertical-align: top;
+            font-size: 25px;
+            color: #efefef;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: right;
+            width: 70px;
+        }
+        .hangsub{
+            display: block;
+            position: relative;
+            top: -13px;
+            left: 00px;
+            vertical-align: top;
+            font-size: 15px;
+            color: #4d4d4d;
+            font-variant: all-petite-caps;
+            padding: 0px;
+            height: 0px;
+        }
+        .time{
+
+            display: inline-block;
+            left: 4px;
+            font-size: 20px;
+            color: #777;
+            font-variant: all-petite-caps;
+            padding: 0px;
+        }
+        .matchtitle{
+
+            display: block;
+            position: relative;
+            left: 0px;
+            padding-left: 0px;
+            top: 4px;
+            margin-bottom: 3px;
+            padding-bottom: 0px;
+            border-bottom: 1px solid #444444;
+            vertical-align: top;
+            font-size: 27px;
+            color: #efefef;
+            font-weight: 400;
+            line-height: 1;
+            text-align: left;
+        }
+        .teamnumber{
+            display: block;
+            position: relative;
+            left: 0px;
+            padding-left: 10px;
+            top: 4px;
+            margin-bottom: 3px;
+            padding-bottom: 0px;
+            border-bottom: 1px solid #444444;
+            vertical-align: top;
+            font-size: 27px;
+            color: #efefef;
+            font-weight: 400;
+            line-height: 1;
+            text-align: left;
+        }
+        .teamname{
+            display: inline-block;
+            left: 4px;
+            font-size: 20px;
+            color: #666;
+            font-variant: all-petite-caps;
+            padding: 0px;
+
+        }
+        .teamdetail{
+            border-bottom: 2px solid rgb(128,188,0);
+            width: 100%;
+            margin: 0px;
         }
     </style>
 </head>

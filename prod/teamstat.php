@@ -463,7 +463,7 @@ foreach($SD as  $match){
                         ?>
                         <div class="pointssub">Points</div>
                         <?php echo $sub['match']['sd_fouls']; ?>
-                        <div class="pointssub">Avg Fouls</div>
+                        <div class="pointssub">Fouls</div>
                     </div>
                     <div class="balls">
                         <?php

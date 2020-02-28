@@ -1,6 +1,6 @@
 <?php
 
-function convertHSL($h, $s, $l, $toHex=true)//HSL to Hex color for Gradients
+function convertHSL($h, $s, $l, $toHex=false)//HSL to Hex color for Gradients
 {
     $h /= 360;
     $s /=100;
@@ -79,7 +79,6 @@ function gradient($level, $colormultiplier = 10)//Hue to RGB for Color Coding
 {
     // 0 = red
     //133 = green
-    global $colormultiplier;
     $hue = ((int)$level * $colormultiplier);
     $sat = 50;
     $lum = 40;
@@ -476,226 +475,6 @@ function gfx_coathanger($level, $bot1, $bot2, $bot3, $mypos){
     print '</svg> ';
 
 
-
-    /* switch($stage){
-		case "0"://0 Parked
-            print '
-	<rect fill="#444444" x="5" y="15" class="bar" width="90" height="4"/>
-</svg> ';
-			break;
-		case "1"://1 Parked
-            print '
-	<line class="st0" x1="50" y1="34.8" x2="50" y2="55.03"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-
-	<rect fill="#444444" x="5" y="15" class="bar" width="90" height="4"/>
-</svg> ';
-			break;
-		case "2"://2 Parked
-            print '
-	<line class="st0" x1="20" y1="34.8" x2="20" y2="55.03"/>
-	<line class="st0" x1="80" y1="34.8" x2="80" y2="55.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-
-	<rect fill="#444444" x="5" y="15" class="bar" width="90" height="4"/>
-</svg> ';
-			break;
-		case "3"://3 Parked
-            print '
-	<line class="st0" x1="20" y1="34.8" x2="20" y2="55.03"/>
-	<line class="st0" x1="50" y1="34.8" x2="50" y2="55.03"/>
-	<line class="st0" x1="80" y1="34.8" x2="80" y2="55.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-
-	<rect fill="#444444" x="5" y="15" class="bar" width="90" height="4"/>
-</svg> ';
-			break;
-		case "4"://1 Level - 0 Parked
-            print '
-	<line class="st0" x1="50" y1="18.8" x2="50" y2="39.03"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-
-	<rect fill="#39B54A" x="5" y="15" class="st10" width="90" height="4"/>
-</svg> ';
-			break;
-		case "5"://1 Level - 1 Parked
-            print '
-
-	<line class="st0" x1="20" y1="34.8" x2="20" y2="55.03"/>
-	<rect fill="'.$poscolorright.'" x="6.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-
-	<line class="st0" x1="50" y1="18.8" x2="50" y2="39.03"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-
-    <rect fill="#39B54A" x="5" y="15" class="st10" width="90" height="4"/>
-</svg> ';
-			break;
-		case "6"://1 Level - 2 Parked
-            print '
-
-<g id="Parked">
-	<line class="st0" x1="20" y1="34.8" x2="20" y2="55.03"/>
-	<line class="st0" x1="80" y1="34.8" x2="80" y2="55.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Level">
-	<line class="st0" x1="50" y1="18.8" x2="50" y2="39.03"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	 <rect fill="#39B54A" x="5" y="15" class="st10" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "7"://2 Level - 0 Parked
-            print '
-
-
-<g id="Level">
-	<line class="st0" x1="20" y1="18.8" x2="20" y2="39.03"/>
-	<line class="st0" x1="80" y1="18.8" x2="80" y2="39.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect fill="#39B54A" x="5" y="15" class="st10" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "8"://2 Level - 1 Parked
-            print '
-
-<g id="Parked">
-	<line class="st0" x1="50" y1="34.8" x2="50" y2="55.03"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Level">
-	<line class="st0" x1="20" y1="18.8" x2="20" y2="39.03"/>
-	<line class="st0" x1="80" y1="18.8" x2="80" y2="39.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect fill="#39B54A" x="5" y="15" class="st10" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "9"://3 Level
-            print '
-
-<g id="Level">
-	<line class="st0" x1="20" y1="18.8" x2="20" y2="39.03"/>
-	<line class="st0" x1="50" y1="18.8" x2="50" y2="39.03"/>
-	<line class="st0" x1="80" y1="18.8" x2="80" y2="39.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect fill="#39B54A" x="5" y="15" class="st10" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "10"://1 Not Level - 0 Parked
-            print '
-<g id="Not_Level">
-	<line class="st0" x1="20" y1="28.8" x2="20" y2="49.03"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="49.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect x="5" y="15" fill="#B5394A" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "11"://1 Not Level - 1 Parked
-            print '
-<g id="Not_Level">
-	<line class="st0" x1="20" y1="28.8" x2="20" y2="49.03"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="49.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Parked">
-	<line class="st0" x1="80" y1="34.8" x2="80" y2="55.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect x="5" y="15" fill="#B5394A" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "12"://1 Not Level - 2 Parked
-            print '
-<g id="Not_Level">
-	<line class="st0" x1="20" y1="28.8" x2="20" y2="49.03"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="49.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Parked">
-	<line class="st0" x1="50" y1="34.8" x2="50" y2="55.03"/>
-	<line class="st0" x1="80" y1="34.8" x2="80" y2="55.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect x="5" y="15" fill="#B5394A" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "13"://2 Not Level - 0 Parked
-            print '
-<g id="Not_Level">
-	<line class="st0" x1="20" y1="28.8" x2="20" y2="49.03"/>
-	<line class="st0" x1="50" y1="18.8" x2="50" y2="39.03"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="49.03" class="st1" width="26.64" height="12.16"/>
-</g>
-
-<g id="Bar">
-	<rect x="5" y="15" fill="#B5394A" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "14"://2 Not Level - 1 Parked
-            print '
-<g id="Not_Level">
-	<line class="st0" x1="20" y1="28.8" x2="20" y2="49.03"/>
-	<line class="st0" x1="50" y1="18.8" x2="50" y2="39.03"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="49.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Parked">
-	<line class="st0" x1="80" y1="34.8" x2="80" y2="55.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="55.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect x="5" y="15" fill="#B5394A" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-		case "15"://3 Not Level
-            print '
-<g id="Not_Level">
-	<line class="st0" x1="20" y1="28.8" x2="20" y2="49.03"/>
-	<line class="st0" x1="50" y1="18.8" x2="50" y2="39.03"/>
-	<line class="st0" x1="80" y1="8.8" x2="80" y2="29.03"/>
-	<rect fill="'.$poscolorright.'" x="66.68" y="29.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolormiddle.'" x="36.68" y="39.03" class="st1" width="26.64" height="12.16"/>
-	<rect fill="'.$poscolorleft.'" x="6.68" y="49.03" class="st1" width="26.64" height="12.16"/>
-</g>
-<g id="Bar">
-	<rect x="5" y="15" fill="#B5394A" transform="matrix(0.95 -0.3123 0.3123 0.95 -2.8083 16.4658)" class="bar" width="90" height="4"/>
-</g>
-</svg> ';
-			break;
-
-		default:
-
-			break;
-	}
-
-*/
 }
 function gfx_defencerecieved($level){
     print '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -828,4 +607,32 @@ function gfx_defencegiven($level){
             break;
     }
 
+}
+function gfx_defense($giv,$rec){
+    print '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="85px"  xml:space="preserve">
+<style type="text/css">
+	.st0park{display:none;fill:none;stroke:#888888;stroke-miterlimit:10;}
+	.st1park{stroke:#000;stroke-miterlimit:10;}
+	.st0hang{fill:none;stroke:#CCCCCC;stroke-miterlimit:10;}
+	.st1hang{stroke:#000;stroke-miterlimit:10;}
+	.bar{stroke:#000000;stroke-miterlimit:10;}
+</style>';
+
+    $give = '<rect fill="#444444" x="5" y="4" class="bar" width="5" height="40"/>';
+    $recieve = '<rect fill="#444444" x="5" y="44" class="bar" width="5" height="40"/>';
+
+    //print $give;
+    //print $recieve;
+    $topheight = round(($giv*7)+4);
+    $topstart = 44 - round(($giv*7)+4);
+    $bottomheight = round(($rec*7)+4);
+    //$give2 = '<rect fill="#444444" x="5" y="4" class="bar" width="5" height="40"/>';
+
+    $give2 = '<rect fill="'.gradient(($giv*20),1).'" x="2" y="'. $topstart .'" class="bar" width="5" height="'. $topheight .'"/>';
+    $recieve2 = '<rect fill="'.gradient(($rec*20),1).'" x="2" y="44" class="bar" width="5" height="'.$bottomheight.'"/>';
+    print $give2;
+    print $recieve2;
+    print '<text text-anchor="start" x="4" y="16" fill="#efefef">G</text>';
+    print '<text text-anchor="start" x="4" y="81" fill="#efefef">R</text>';
+    print '</svg> ';
 }
